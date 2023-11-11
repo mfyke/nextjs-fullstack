@@ -10,7 +10,9 @@ export const authOptions = {
       clientSecret: process.env.GITHUB_SECRET as string,
     }),
   ],
-  adapter: MongoDBAdapter(clientPromise),
+  adapter: MongoDBAdapter(clientPromise, {
+    databaseName: "nextjs-fullstack",
+  }),
 };
 
 const handler = NextAuth(authOptions);

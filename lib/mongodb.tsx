@@ -1,11 +1,11 @@
-const { MongoClient } = require('mongodb');
+import { MongoClient } from 'mongodb';
 
 const url = process.env.MONGODB_URI || 'mongodb://0.0.0.0:27017';
 
 const options = {}
 
 let client
-let clientPromise: Promise<typeof MongoClient>
+let clientPromise: Promise<MongoClient>
 
 if (process.env.NODE_ENV === "development") {
   // In development mode, use a global variable so that the value
