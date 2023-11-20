@@ -6,6 +6,9 @@ import clientPromise from "@/lib/mongodb";
 import type { Session, User } from "next-auth";
 
 export const authOptions = {
+  session: {
+    maxAge: 1 * 24 * 60 * 60, // 1 day
+  },
   providers: [
     GithubProvider({
       clientId: process.env.GITHUB_ID as string,
