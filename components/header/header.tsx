@@ -43,7 +43,7 @@ export default function Header() {
                   onClick={handleMenu}
                   color="inherit"
                 >
-                  <Avatar alt="User Photo from Login Source" src={imageUrl as string} />
+                  <Avatar alt="User Photo from Login Source" src={imageUrl as string} imgProps={{referrerPolicy: "no-referrer"}} />
                 </IconButton>
                 <Menu
                   id="menu-appbar"
