@@ -16,7 +16,7 @@ export async function GET(request: Request): Promise<Response> {
     const friends = await client
     .db("nextjs-fullstack")
     .collection("friendships")
-    .find()
+    .find({ $or: [{ sender: new ObjectId(session.user.id) }, { receiver: new ObjectId(session.user.id) }] })
     .toArray();
     return new Response(JSON.stringify(friends));
   } catch(error: any) {
@@ -53,17 +53,13 @@ export async function POST(request: Request): Promise<Response> {
       return new Response("You cannot be friends with yourself", { status: 400 });
     }
 
-    const possibleFriendship1 = await client
+    const existingFriendship = await client
       .db("nextjs-fullstack")
       .collection("friendships")
-      .findOne({ sender: new ObjectId(session.user.id), receiver: friend._id })
+      .find({ $or: [{ sender: new ObjectId(session.user.id), receiver: friend._id }, { sender: friend._id, receiver: new ObjectId(session.user.id) }] })
+      .toArray()
 
-    const possibleFriendship2 = await client
-      .db("nextjs-fullstack")
-      .collection("friendships")
-      .findOne({ sender: friend._id, receiver: new ObjectId(session.user.id)})
-
-    if(possibleFriendship1 !== null || possibleFriendship2 !== null) {
+    if(existingFriendship.length > 0) {
       return new Response("Friendship already exists", { status: 400 });
     }
 
